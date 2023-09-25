@@ -14,16 +14,35 @@ enum shape_kernel {
 
 int main() {
 
-    Mat A = imread("sample.jpg");
-    Scalar();
-    if (A.empty()) {
-        cout << "can not read image";
-        return 1;
-    }
-    resize(A, A, Size(640, 460));
+    // custom matrix A
+    Mat A = (Mat_<uchar>(16, 16) <<
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0,
+        0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0,
+        0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    /*
+ Mat A = imread("sample.jpg");
+ Scalar();
+ if (A.empty()) {
+     cout << "can not read image";
+     return 1;
+ }
+ resize(A, A, Size(640, 460));
+ */
 
-
-    // chọn loại ma trận
+ // chọn loại ma trận
     shape_kernel kernel_choice;
     int input_shape;
 
@@ -95,10 +114,10 @@ void imp_dilate(Mat A, Size size, int shape) {
     Mat dst = Mat(A.rows, A.cols, CV_8UC1);
     resize(dst, dst, Size(640, 460));
 
-
+    // browse each pixel
     for (int i = 0; i < A.rows; i++) {
         for (int j = 0; j < A.cols; j++) {
-
+            // Initialize the initial value for each pixel
             dst.at<uchar>(i, j) = 0;
             // matrix rectangle kernel
             if (shape == 2) {
@@ -161,14 +180,14 @@ void imp_dilate(Mat A, Size size, int shape) {
                             }
                         }
                     }
-                } // 1 or 2 canh la chan
+                } // 1 or 2 dimension is even
                 else if (h % 2 == 0 || w % 2 == 0) {
-                    // h chan w le
+                    // h even ,  w odd
                     if (h % 2 == 0 && w % 2 != 0) {
                         for (int r = -(h + 1) / 2; r < h / 2; r++) {
                             for (int c = -w / 2; c <= w / 2; c++) {
                                 if (i + r >= 0 && i + r < A.rows && j + c >= 0 && j + c < A.cols) {
-                                    // tim max theo từng ma tran 1 x n va n x 1
+                                    // Find max in each array 1 x n and n x 1
                                     if (dst.at<uchar>(i, j) < A.at<uchar>(i + r, j)) {
                                         dst.at<uchar>(i, j) = A.at<uchar>(i + r, j);
                                     }
@@ -180,12 +199,12 @@ void imp_dilate(Mat A, Size size, int shape) {
 
                         }
                     }
-                    // h le w chan
+                    // h odd , w even
                     else if (h % 2 != 0 && w % 2 == 0) {
                         for (int c = -(w + 1) / 2; c < w / 2; c++) {
                             for (int r = -h / 2; r <= h / 2; r++) {
                                 if (i + r >= 0 && i + r < A.rows && j + c >= 0 && j + c < A.cols) {
-                                    // tim max theo từng ma tran 1 x n va n x 1
+                                    // Find max in each array 1 x n and n x 1
                                     if (dst.at<uchar>(i, j) < A.at<uchar>(i + r, j)) {
                                         dst.at<uchar>(i, j) = A.at<uchar>(i + r, j);
                                     }
@@ -197,11 +216,11 @@ void imp_dilate(Mat A, Size size, int shape) {
 
                         }
                     }
-                    // ca h va w deu chan
+                    // h,w is even
                     else for (int c = -(w + 1) / 2; c < w / 2; c++) {
                         for (int r = -(h + 1) / 2; r < h / 2; r++) {
                             if (i + r >= 0 && i + r < A.rows && j + c >= 0 && j + c < A.cols) {
-                                // tim max theo từng ma tran 1 x n va n x 1
+                                // Find max in each array 1 x n and n x 1
                                 if (dst.at<uchar>(i, j) < A.at<uchar>(i + r, j)) {
                                     dst.at<uchar>(i, j) = A.at<uchar>(i + r, j);
                                 }
@@ -213,11 +232,11 @@ void imp_dilate(Mat A, Size size, int shape) {
 
                     }
                 }
-                // ca h va w deu le
+                // h,w is odd
                 else for (int c = -w / 2; c <= w / 2; c++) {
                     for (int r = -h / 2; r <= h / 2; r++) {
                         if (i + r >= 0 && i + r < A.rows && j + c >= 0 && j + c < A.cols) {
-                            // tim max theo từng ma tran 1 x n va n x 1
+                            // Find max in each array 1 x n and n x 1
                             if (dst.at<uchar>(i, j) < A.at<uchar>(i + r, j)) {
                                 dst.at<uchar>(i, j) = A.at<uchar>(i + r, j);
                             }
