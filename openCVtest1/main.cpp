@@ -66,30 +66,40 @@ Mat dilate_im(Mat img, Mat struct_element) {
     }
 
 
-    // inital variable size image , kernel
+    // initial variable size image , kernel
     int h = img.rows;
     int w = img.cols;
 
     int x = struct_element.cols;
     int y = struct_element.rows;
 
-    // inital img dst
+    // initial img dst
     Mat result = img.clone();
 
     // scan each pixel 
     for (int i = 0; i < h; i++) {
         for (int j = 0; j < w; j++) {
 
+            // initial varible position pixel start and end for caculator 
+            int start_number_row = i - y / 2;
+            int end_number_row = i + y / 2;
+            int start_number_col = j - x / 2;
+            int end_number_col = j + x / 2;
+
             // scan each pixel within kernel 
-            for (int r = i - y / 2; r <= i + y / 2; r++) {
-                for (int c = j - x / 2; c <= j + x / 2; c++) {
+            for (int r = start_number_row; r <= end_number_row; r++) {
+                for (int c = start_number_col; c <= end_number_col; c++) {
+
+                    // initial varible position belong to kernel
+                    int point_x = c - j + x / 2;
+                    int point_y = r - i + y / 2;
 
                     // check access out of range size image 
-                    if (r >= 0 && r < h && c >= 0 && c < w &&
+                    if (r >= 0 && r < h && c >= 0 && c < w &&                       
                         //check access out of range size kernel
-                        (r - i + y / 2) < y && (c - j + x / 2) < x &&
+                        point_y < y && point_x < x &&
                         // remove kernel 0 value position
-                        struct_element.at<uchar>((r - i + y / 2), (c - j + x / 2)) != 0)
+                        struct_element.at<uchar>(point_y, point_x) != 0)
                     {
                         // Find the maximum value of neighboring pixels
                         if (result.at<uchar>(i, j) < img.at<uchar>(r, c)) {
