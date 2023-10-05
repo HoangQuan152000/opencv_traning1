@@ -1,123 +1,58 @@
-﻿
+﻿#include <iostream>
 #include <opencv2/core.hpp>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
-#include <iostream>
-
 using namespace cv;
 using namespace std;
 
-Mat dilate_im(Mat img, Mat struct_element);
-
-
 int main() {
-    // load image from file
-    Mat img = imread("sample.jpg");
+
+
+    Mat img = imread("example.jpg");
+    Scalar();
     if (img.empty()) {
-        cout << "khong doc duoc anh!";
-        return 0;
+        cout << "can not read image";
+        return 1;
     }
     resize(img, img, Size(640, 460));
 
-    // initialize the source matrix
-    Mat A = (Mat_<uchar>(16, 16) <<
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0,
-        0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0,
-        0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-
-    // initialize the struct element matrix
-    Mat struct_element = getStructuringElement(MORPH_CROSS, Size(1, 3));
+    Mat gray_img;
+    cvtColor(img, gray_img, COLOR_BGR2GRAY);
 
 
-    // call dilate function 
-    Mat result = dilate_im(img, struct_element);
+    Mat bin_img;
+    adaptiveThreshold(gray_img, bin_img, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, 7, -2);
 
 
-    imshow("Result", result);
+    // 460 / 115 = 4
+    int vertical_size = bin_img.rows / 115;
+    // vertical_kernel (1,4);
+    Mat vertical_kernel = getStructuringElement(MORPH_RECT, Size(1, vertical_size));
+
+    Mat erode_img;
+    erode(bin_img, erode_img, vertical_kernel);
+
+    Mat dilate_img;
+    dilate(erode_img, dilate_img, vertical_kernel);
+
+
+    // 640 / 30 = 21
+    int horizontal_size = bin_img.cols / 30;
+    // horizontal_kernel (21,1)
+    Mat horizontal_kernel = getStructuringElement(MORPH_RECT, Size(horizontal_size, 1));
+
+    Mat erode_img_1;
+    erode(bin_img, erode_img_1, horizontal_kernel);
+    Mat dilate_img_1;
+    dilate(erode_img_1, dilate_img_1, horizontal_kernel);
+
+
+    imshow("src", bin_img);
+    imshow("img", img);
+
+    imshow("extract vertical", dilate_img);
+    imshow("extract horizontal", dilate_img_1);
     waitKey(0);
 
     return 0;
 }
-Mat dilate_im(Mat img, Mat struct_element) {
-
-
-    // check type data , convert to gray image 
-    if (img.type() != CV_8UC1) {
-        cvtColor(img, img, COLOR_BGR2GRAY);
-    }
-
-
-    // check size kernel 
-    if (struct_element.cols == 0 || struct_element.rows == 0) {
-        return img;
-    }
-
-
-    // initial variable size image , kernel
-    int h = img.rows;
-    int w = img.cols;
-
-    int x = struct_element.cols;
-    int y = struct_element.rows;
-
-    // initial img dst
-    Mat result = img.clone();
-
-    // scan each pixel 
-    for (int i = 0; i < h; i++) {
-        for (int j = 0; j < w; j++) {
-
-            // initial varible position pixel start and end for caculator 
-            int start_number_row = i - y / 2;
-            int end_number_row = i + y / 2;
-            int start_number_col = j - x / 2;
-            int end_number_col = j + x / 2;
-
-            // scan each pixel within kernel 
-            for (int r = start_number_row; r <= end_number_row; r++) {
-                for (int c = start_number_col; c <= end_number_col; c++) {
-
-                    // initial varible position belong to kernel
-                    int point_x = c - j + x / 2;
-                    int point_y = r - i + y / 2;
-
-                    // check access out of range size image 
-                    if (r >= 0 && r < h && c >= 0 && c < w &&                       
-                        //check access out of range size kernel
-                        point_y < y && point_x < x &&
-                        // remove kernel 0 value position
-                        struct_element.at<uchar>(point_y, point_x) != 0)
-                    {
-                        // Find the maximum value of neighboring pixels
-                        if (result.at<uchar>(i, j) < img.at<uchar>(r, c)) {
-                            result.at<uchar>(i, j) = img.at<uchar>(r, c);
-                        }
-                    }
-                }
-            }
-
-        }
-    }
-
-    return result;
-}
-
-
-
-
-
-
-

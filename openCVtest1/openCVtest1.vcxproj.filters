@@ -51,5 +51,11 @@
     <ClCompile Include="threshold_func.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="implement_otsu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="implement_dilating.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

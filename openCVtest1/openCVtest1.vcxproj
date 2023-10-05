@@ -148,6 +148,8 @@
     <ClCompile Include="erode_fun.cpp" />
     <ClCompile Include="extractXY.cpp" />
     <ClCompile Include="hit_or_miss.cpp" />
+    <ClCompile Include="implement_dilating.cpp" />
+    <ClCompile Include="implement_otsu.cpp" />
     <ClCompile Include="Laplacian.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="morphology_fun.cpp" />
