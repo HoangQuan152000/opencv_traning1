@@ -48,5 +48,8 @@
     <ClCompile Include="extractXY.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="threshold_func.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
