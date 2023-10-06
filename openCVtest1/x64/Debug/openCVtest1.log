@@ -1,2 +1,49 @@
 ﻿  main.cpp
+C:\Users\PC2-2\Desktop\training opencv\opencv_traning1\openCVtest1\main.cpp(46,57): warning C4244: 'argument': conversion from '_Tp' to '_Tp', possible loss of data
+          with
+          [
+              _Tp=float
+          ]
+          and
+          [
+              _Tp=int
+          ]
+C:\Users\PC2-2\Desktop\training opencv\opencv_traning1\openCVtest1\main.cpp(46,42): warning C4244: 'argument': conversion from '_Tp' to '_Tp', possible loss of data
+          with
+          [
+              _Tp=float
+          ]
+          and
+          [
+              _Tp=int
+          ]
+C:\Users\PC2-2\Desktop\training opencv\opencv_traning1\openCVtest1\main.cpp(46,92): warning C4244: 'argument': conversion from '_Tp' to '_Tp', possible loss of data
+          with
+          [
+              _Tp=float
+          ]
+          and
+          [
+              _Tp=int
+          ]
+C:\Users\PC2-2\Desktop\training opencv\opencv_traning1\openCVtest1\main.cpp(46,78): warning C4244: 'argument': conversion from '_Tp' to '_Tp', possible loss of data
+          with
+          [
+              _Tp=float
+          ]
+          and
+          [
+              _Tp=int
+          ]
+C:\Users\PC2-2\Desktop\training opencv\opencv_traning1\openCVtest1\main.cpp(64,37): warning C4244: 'argument': conversion from 'float' to '_Tp', possible loss of data
+          with
+          [
+              _Tp=int
+          ]
+C:\Users\PC2-2\Desktop\training opencv\opencv_traning1\openCVtest1\main.cpp(64,34): warning C4244: 'argument': conversion from 'float' to '_Tp', possible loss of data
+          with
+          [
+              _Tp=int
+          ]
+C:\Users\PC2-2\Desktop\training opencv\opencv_traning1\openCVtest1\main.cpp(64,41): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
   openCVtest1.vcxproj -> C:\Users\PC2-2\Desktop\training opencv\opencv_traning1\x64\Debug\openCVtest1.exe

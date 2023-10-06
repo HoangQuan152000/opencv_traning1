@@ -153,6 +153,7 @@
     <ClCompile Include="Laplacian.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="morphology_fun.cpp" />
+    <ClCompile Include="pyramid_image.cpp" />
     <ClCompile Include="sobel.cpp" />
     <ClCompile Include="threshold_func.cpp" />
   </ItemGroup>

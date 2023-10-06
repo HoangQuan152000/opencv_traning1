@@ -1,58 +1,74 @@
 ﻿#include <iostream>
-#include <opencv2/core.hpp>
-#include <opencv2/imgproc.hpp>
-#include <opencv2/highgui.hpp>
+#include <opencv2/opencv.hpp>
 using namespace cv;
 using namespace std;
 
 int main() {
 
+    Mat A = (Mat_<uchar>(16, 16) <<
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0,
+        0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0,
+        0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
-    Mat img = imread("example.jpg");
-    Scalar();
-    if (img.empty()) {
-        cout << "can not read image";
-        return 1;
+    threshold(A,A,0,255,THRESH_BINARY);
+    Mat image = imread("sample.jpg");
+    if (image.empty()) {
+        cout << "cannot read file!";
+        return -1;
+   }
+    resize(image,image ,Size(640,460));
+    Mat gray_image;
+    cvtColor(image, gray_image,COLOR_BGR2GRAY);
+    Mat canny_image;
+    Canny(gray_image,canny_image,100,200);
+
+
+    vector<Vec2f> lines_dectect;
+    HoughLines(canny_image,lines_dectect,1,CV_PI/180,100);
+    
+
+    vector<Vec4f> linesP;
+    HoughLinesP(canny_image,linesP,1,CV_PI/180,100,75,10);
+    for (int i = 0; i < linesP.size();  i ++) {
+        line(gray_image,Point(linesP[i][0] , linesP[i][1]), Point(linesP[i][2], linesP[i][3]) , Scalar(0,0,255),2);
+
     }
-    resize(img, img, Size(640, 460));
 
-    Mat gray_img;
-    cvtColor(img, gray_img, COLOR_BGR2GRAY);
+    // Tìm các đường tròn bằng HoughCircles
+    vector<Vec3f> circles;
+    HoughCircles(canny_image, circles, HOUGH_GRADIENT, 1, gray_image.rows / 64, 200, 10, 5, 30);
 
+    // Vẽ các đường tròn
+    for (size_t i = 0; i < circles.size(); i++) {
+        // Lấy tọa độ tâm của đường tròn
+        float x = circles[i][0];
+        float y = circles[i][1];
 
-    Mat bin_img;
-    adaptiveThreshold(gray_img, bin_img, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, 7, -2);
+        // Lấy bán kính của đường tròn
+        float r = circles[i][2];
 
+        // Vẽ đường tròn
+        circle(gray_image, Point(x, y), r, Scalar(0, 255, 0), 2);
+    }
 
-    // 460 / 115 = 4
-    int vertical_size = bin_img.rows / 115;
-    // vertical_kernel (1,4);
-    Mat vertical_kernel = getStructuringElement(MORPH_RECT, Size(1, vertical_size));
-
-    Mat erode_img;
-    erode(bin_img, erode_img, vertical_kernel);
-
-    Mat dilate_img;
-    dilate(erode_img, dilate_img, vertical_kernel);
-
-
-    // 640 / 30 = 21
-    int horizontal_size = bin_img.cols / 30;
-    // horizontal_kernel (21,1)
-    Mat horizontal_kernel = getStructuringElement(MORPH_RECT, Size(horizontal_size, 1));
-
-    Mat erode_img_1;
-    erode(bin_img, erode_img_1, horizontal_kernel);
-    Mat dilate_img_1;
-    dilate(erode_img_1, dilate_img_1, horizontal_kernel);
-
-
-    imshow("src", bin_img);
-    imshow("img", img);
-
-    imshow("extract vertical", dilate_img);
-    imshow("extract horizontal", dilate_img_1);
-    waitKey(0);
+    // Hiển thị hình ảnh
+    imshow("Hough Circles", canny_image);
+    imshow("src", canny_image);
+    imshow("dst", gray_image);
+    waitKey(0); // Wait for any keystroke in the window
 
     return 0;
 }
