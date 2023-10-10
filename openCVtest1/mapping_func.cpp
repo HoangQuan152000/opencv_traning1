@@ -1,9 +1,9 @@
-﻿#include <iostream>
+#include <iostream>
 #include <opencv2/opencv.hpp>
 using namespace cv;
 using namespace std;
 
-int main() {
+int mapp() {
 
     Mat A = (Mat_<uchar>(16, 16) <<
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -23,36 +23,34 @@ int main() {
         0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
-    threshold(A,A,0,255,THRESH_BINARY);
+    threshold(A, A, 0, 255, THRESH_BINARY);
     Mat image = imread("sample.jpg");
     if (image.empty()) {
         cout << "cannot read file!";
         return -1;
-   }
-    resize(image,image ,Size(640,460));
+    }
+    resize(image, image, Size(640, 460));
     Mat gray_image;
-    cvtColor(image, gray_image,COLOR_BGR2GRAY);
+    cvtColor(image, gray_image, COLOR_BGR2GRAY);
 
-    //create the center point of the image for rotation
-    Point2f center((gray_image.cols - 1) / 2 , (gray_image.rows - 1) / 2);
-    //Create a rotation matrix with arbitrary points and rotation angles
-    Mat matrix_rota = getRotationMatrix2D(center,70,1);
-    //initialize the rotating image and call the function warpAffine
-    Mat rota_image;
-    warpAffine(A,rota_image,matrix_rota,gray_image.size());
-    // Initialize image movement size
-    int tran_x = gray_image.cols / 4;
-    int tran_y = gray_image.rows / 3;
-    // initialize the move matrix
-    Mat matrix_tran = (Mat_<float>(2,3) << 1, 0, tran_x,
-        0, 1, tran_y);
-    //initialize the moving image and call the function warpAffine
-    Mat tran_image;
-    warpAffine(gray_image,tran_image,matrix_tran, tran_image.size());
-    
+    // Create the destination image and the two mapping matrix (for x and y )
+    Mat dst;
+    Mat map_x(gray_image.size(), CV_32FC1);
+    Mat map_y(gray_image.size(), CV_32FC1);
 
-    imshow("dst", rota_image);
-    imshow("tran", tran_image);
+    //Go through each pixel and update the value for each mapping matrix 
+    for (int i = 0; i < gray_image.rows; i++) {
+        for (int j = 0; j < gray_image.cols; j++) {
+            map_x.at<float>(i, j) = (float)(map_x.cols - j);
+            map_y.at<float>(i, j) = (float)(map_y.rows - i);
+        }
+
+    }
+    // use remap function
+    remap(gray_image, dst, map_x, map_y, INTER_LINEAR);
+
+
+    imshow("dst", dst);
     waitKey(0); // Wait for any keystroke in the window
 
     return 0;

@@ -148,14 +148,17 @@
     <ClCompile Include="erode_fun.cpp" />
     <ClCompile Include="extractXY.cpp" />
     <ClCompile Include="hit_or_miss.cpp" />
+    <ClCompile Include="hough_transform.cpp" />
     <ClCompile Include="implement_dilating.cpp" />
     <ClCompile Include="implement_otsu.cpp" />
     <ClCompile Include="Laplacian.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="mapping_func.cpp" />
     <ClCompile Include="morphology_fun.cpp" />
     <ClCompile Include="pyramid_image.cpp" />
     <ClCompile Include="sobel.cpp" />
     <ClCompile Include="threshold_func.cpp" />
+    <ClCompile Include="warpAffine_func.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

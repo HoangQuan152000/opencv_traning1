@@ -60,5 +60,14 @@
     <ClCompile Include="pyramid_image.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="hough_transform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mapping_func.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="warpAffine_func.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
