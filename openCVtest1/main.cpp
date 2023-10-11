@@ -1,59 +1,71 @@
-﻿#include <iostream>
-#include <opencv2/opencv.hpp>
-using namespace cv;
+﻿
+#include "opencv2/highgui.hpp"
+#include "opencv2/imgcodecs.hpp"
+#include "opencv2/imgproc.hpp"
+#include <iostream>
 using namespace std;
+using namespace cv;
+int main(int argc, char** argv)
+{
+	Mat src = imread("sample.jpg");
+	resize(src,src,Size(640,460));
+	if (src.empty())
+	{
+		return -1;
+	}
 
-int main() {
+	// Create an array containing single-channel color image matrices
+	vector<Mat> bgr_planes;
+	// Divide a color image into 3 single-channel color images
+	split(src, bgr_planes);
 
-    Mat A = (Mat_<uchar>(16, 16) <<
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0,
-        0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0,
-        0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
-    threshold(A,A,0,255,THRESH_BINARY);
-    Mat image = imread("sample.jpg");
-    if (image.empty()) {
-        cout << "cannot read file!";
-        return -1;
-   }
-    resize(image,image ,Size(640,460));
-    Mat gray_image;
-    cvtColor(image, gray_image,COLOR_BGR2GRAY);
+	int histSize = 256;
+	 // Initialize the array containing 2 elements as the calculation range
+	float range[] = {0,256};
+	// initialize array pointer
+	const float* histRange[] = { range };
 
-    //create the center point of the image for rotation
-    Point2f center((gray_image.cols - 1) / 2 , (gray_image.rows - 1) / 2);
-    //Create a rotation matrix with arbitrary points and rotation angles
-    Mat matrix_rota = getRotationMatrix2D(center,70,1);
-    //initialize the rotating image and call the function warpAffine
-    Mat rota_image;
-    warpAffine(A,rota_image,matrix_rota,gray_image.size());
-    // Initialize image movement size
-    int tran_x = gray_image.cols / 4;
-    int tran_y = gray_image.rows / 3;
-    // initialize the move matrix
-    Mat matrix_tran = (Mat_<float>(2,3) << 1, 0, tran_x,
-        0, 1, tran_y);
-    //initialize the moving image and call the function warpAffine
-    Mat tran_image;
-    warpAffine(gray_image,tran_image,matrix_tran, tran_image.size());
-    
+	// Initialize objects corresponding to color channels
+	Mat b_hist, g_hist, r_hist;
+	// create arrays containing color histogram information
+	calcHist(&bgr_planes[0], 1, 0, Mat(), b_hist, 1, &histSize, histRange);
+	calcHist(&bgr_planes[1], 1, 0, Mat(), g_hist, 1, &histSize, histRange);
+	calcHist(&bgr_planes[2], 1, 0, Mat(), r_hist, 1, &histSize, histRange);
+	
+	// Initialize image size without histogram
+	int hist_w = 640, hist_h = 460;
 
-    imshow("dst", rota_image);
-    imshow("tran", tran_image);
-    waitKey(0); // Wait for any keystroke in the window
+	// initialize the width of each bin
+	int bin_w = cvRound((double)hist_w / histSize);
+	 
 
-    return 0;
+	// normalizes calculated arrays to the value range 0 to 400 
+	normalize(b_hist, b_hist, 0, 400, NORM_MINMAX);
+	normalize(g_hist, g_hist, 0, 400, NORM_MINMAX);
+	normalize(r_hist, r_hist, 0, 400, NORM_MINMAX);
+
+	//initialize the object containing the histogram
+	Mat histImage(Size(640, 460), CV_8UC3, Scalar(0, 0, 0));
+	//Draw value lines corresponding to color channels
+	for (int i = 1; i < histSize; i++)
+	{
+		line(histImage, Point(bin_w * (i - 1), hist_h - cvRound(b_hist.at<float>(i - 1))),
+			Point(bin_w * (i), hist_h - cvRound(b_hist.at<float>(i))),
+			Scalar(255, 0, 0), 1, 8, 0);
+		line(histImage, Point(bin_w * (i - 1), hist_h - cvRound(g_hist.at<float>(i - 1))),
+			Point(bin_w * (i), hist_h - cvRound(g_hist.at<float>(i))),
+			Scalar(0, 255, 0), 2, 8, 0);
+		line(histImage, Point(bin_w * (i - 1), hist_h - cvRound(r_hist.at<float>(i - 1))),
+			Point(bin_w * (i), hist_h - cvRound(r_hist.at<float>(i))),
+			Scalar(0, 0, 255), 2, 8, 0);
+	}
+
+	imshow("Source image", src);
+	imshow("b_hist", bgr_planes[0]);
+	imshow("g_hist", bgr_planes[1]);
+	imshow("r_histo", bgr_planes[2]);
+	imshow("calcHist Demo", histImage);
+	waitKey();
+	return 0;
 }

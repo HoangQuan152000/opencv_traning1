@@ -69,5 +69,11 @@
     <ClCompile Include="warpAffine_func.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="remapping_func.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="equalHistogram_func.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

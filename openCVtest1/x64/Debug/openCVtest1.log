@@ -1,24 +1,2 @@
 ﻿  main.cpp
-C:\Users\PC2-2\Desktop\training opencv\opencv_traning1\openCVtest1\main.cpp(37,70): warning C4244: 'argument': conversion from 'int' to '_Tp', possible loss of data
-          with
-          [
-              _Tp=float
-          ]
-C:\Users\PC2-2\Desktop\training opencv\opencv_traning1\openCVtest1\main.cpp(37,42): warning C4244: 'argument': conversion from 'int' to '_Tp', possible loss of data
-          with
-          [
-              _Tp=float
-          ]
-  warpAffine_func.cpp
-C:\Users\PC2-2\Desktop\training opencv\opencv_traning1\openCVtest1\warpAffine_func.cpp(37,69): warning C4244: 'argument': conversion from 'int' to '_Tp', possible loss of data
-          with
-          [
-              _Tp=float
-          ]
-C:\Users\PC2-2\Desktop\training opencv\opencv_traning1\openCVtest1\warpAffine_func.cpp(37,42): warning C4244: 'argument': conversion from 'int' to '_Tp', possible loss of data
-          with
-          [
-              _Tp=float
-          ]
-  Generating Code...
   openCVtest1.vcxproj -> C:\Users\PC2-2\Desktop\training opencv\opencv_traning1\x64\Debug\openCVtest1.exe

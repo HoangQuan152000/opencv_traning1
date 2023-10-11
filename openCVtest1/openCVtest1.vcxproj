@@ -145,6 +145,7 @@
     <ClCompile Include="access_pixel.cpp" />
     <ClCompile Include="canny.cpp" />
     <ClCompile Include="dilate_fun.cpp" />
+    <ClCompile Include="equalHistogram_func.cpp" />
     <ClCompile Include="erode_fun.cpp" />
     <ClCompile Include="extractXY.cpp" />
     <ClCompile Include="hit_or_miss.cpp" />
@@ -156,6 +157,7 @@
     <ClCompile Include="mapping_func.cpp" />
     <ClCompile Include="morphology_fun.cpp" />
     <ClCompile Include="pyramid_image.cpp" />
+    <ClCompile Include="remapping_func.cpp" />
     <ClCompile Include="sobel.cpp" />
     <ClCompile Include="threshold_func.cpp" />
     <ClCompile Include="warpAffine_func.cpp" />
