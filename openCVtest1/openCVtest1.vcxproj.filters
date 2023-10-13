@@ -75,5 +75,14 @@
     <ClCompile Include="equalHistogram_func.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="calcHistogram_func.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="compareHist_func.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="template_match_func.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

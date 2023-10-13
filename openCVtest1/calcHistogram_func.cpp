@@ -33,17 +33,16 @@ int cacul(int argc, char** argv)
 	calcHist(&bgr_planes[1], 1, 0, Mat(), g_hist, 1, &histSize, histRange);
 	calcHist(&bgr_planes[2], 1, 0, Mat(), r_hist, 1, &histSize, histRange);
 
+	// normalizes calculated arrays to the value range 0 to 400 
+	normalize(b_hist, b_hist, 0, 400, NORM_MINMAX);
+	normalize(g_hist, g_hist, 0, 400, NORM_MINMAX);
+	normalize(r_hist, r_hist, 0, 400, NORM_MINMAX);
+
 	// Initialize image size without histogram
 	int hist_w = 640, hist_h = 460;
 
 	// initialize the width of each bin
 	int bin_w = cvRound((double)hist_w / histSize);
-
-
-	// normalizes calculated arrays to the value range 0 to 400 
-	normalize(b_hist, b_hist, 0, 400, NORM_MINMAX);
-	normalize(g_hist, g_hist, 0, 400, NORM_MINMAX);
-	normalize(r_hist, r_hist, 0, 400, NORM_MINMAX);
 
 	//initialize the object containing the histogram
 	Mat histImage(Size(640, 460), CV_8UC3, Scalar(0, 0, 0));

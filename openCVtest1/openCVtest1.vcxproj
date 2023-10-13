@@ -144,10 +144,12 @@
   <ItemGroup>
     <ClCompile Include="access_pixel.cpp" />
     <ClCompile Include="canny.cpp" />
+    <ClCompile Include="compareHist_func.cpp" />
     <ClCompile Include="dilate_fun.cpp" />
     <ClCompile Include="equalHistogram_func.cpp" />
     <ClCompile Include="erode_fun.cpp" />
     <ClCompile Include="extractXY.cpp" />
+    <ClCompile Include="calcHistogram_func.cpp" />
     <ClCompile Include="hit_or_miss.cpp" />
     <ClCompile Include="hough_transform.cpp" />
     <ClCompile Include="implement_dilating.cpp" />
@@ -159,6 +161,7 @@
     <ClCompile Include="pyramid_image.cpp" />
     <ClCompile Include="remapping_func.cpp" />
     <ClCompile Include="sobel.cpp" />
+    <ClCompile Include="template_match_func.cpp" />
     <ClCompile Include="threshold_func.cpp" />
     <ClCompile Include="warpAffine_func.cpp" />
   </ItemGroup>
