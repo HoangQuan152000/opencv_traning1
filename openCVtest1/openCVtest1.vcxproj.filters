@@ -16,73 +16,109 @@
     <Filter Include="NewFilter1">
       <UniqueIdentifier>{58f15c7d-e403-4ed7-b727-2857d176e415}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Histogram">
+      <UniqueIdentifier>{030b5d0c-1153-4d73-a670-20d49d36e100}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Mapping_Transform">
+      <UniqueIdentifier>{b42b7111-3cd3-4b56-bf26-fab4d99fba43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Hough_Tranform">
+      <UniqueIdentifier>{ee43183e-5447-48a1-8124-735f6a44e655}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Sobel_Laplace_canny">
+      <UniqueIdentifier>{20e5fa08-ec5d-4f89-85ef-ac2fd036109f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Threshold_operations">
+      <UniqueIdentifier>{4fc36705-e53f-4adf-bc36-cb4a492a9735}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Pyramid_image">
+      <UniqueIdentifier>{36bd8da4-8d25-4d34-9285-47c1c04ee788}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Morphological_operation">
+      <UniqueIdentifier>{241c888a-4071-4a8d-a667-1c63325fa2d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Morphological_operation\eroding and dilating">
+      <UniqueIdentifier>{9763b109-244e-44a2-91e1-e60f6a796f79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Morphological_operation\Morphology">
+      <UniqueIdentifier>{fb38cbbd-122a-46ce-ad89-20ae5cee21e1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sobel.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="boundRect_minEnclosingCircle.cpp">
+      <Filter>Source Files\Histogram</Filter>
     </ClCompile>
-    <ClCompile Include="Laplacian.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="calcHistogram_func.cpp">
+      <Filter>Source Files\Histogram</Filter>
     </ClCompile>
-    <ClCompile Include="canny.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="equalHistogram_func.cpp">
+      <Filter>Source Files\Histogram</Filter>
+    </ClCompile>
+    <ClCompile Include="compareHist_func.cpp">
+      <Filter>Source Files\Histogram</Filter>
+    </ClCompile>
+    <ClCompile Include="template_match_func.cpp">
+      <Filter>Source Files\Histogram</Filter>
     </ClCompile>
     <ClCompile Include="access_pixel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="erode_fun.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="dilate_fun.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="morphology_fun.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="hit_or_miss.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="extractXY.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="threshold_func.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="implement_otsu.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="implement_dilating.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="pyramid_image.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="hough_transform.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="mapping_func.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Mapping_Transform</Filter>
     </ClCompile>
     <ClCompile Include="warpAffine_func.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Mapping_Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="hough_transform.cpp">
+      <Filter>Source Files\Hough_Tranform</Filter>
+    </ClCompile>
+    <ClCompile Include="canny.cpp">
+      <Filter>Source Files\Sobel_Laplace_canny</Filter>
+    </ClCompile>
+    <ClCompile Include="Laplacian.cpp">
+      <Filter>Source Files\Sobel_Laplace_canny</Filter>
+    </ClCompile>
+    <ClCompile Include="sobel.cpp">
+      <Filter>Source Files\Sobel_Laplace_canny</Filter>
+    </ClCompile>
+    <ClCompile Include="implement_otsu.cpp">
+      <Filter>Source Files\Threshold_operations</Filter>
+    </ClCompile>
+    <ClCompile Include="threshold_func.cpp">
+      <Filter>Source Files\Threshold_operations</Filter>
     </ClCompile>
     <ClCompile Include="remapping_func.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Mapping_Transform</Filter>
     </ClCompile>
-    <ClCompile Include="equalHistogram_func.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="pyramid_image.cpp">
+      <Filter>Source Files\Pyramid_image</Filter>
     </ClCompile>
-    <ClCompile Include="calcHistogram_func.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="implement_dilating.cpp">
+      <Filter>Source Files\Morphological_operation\eroding and dilating</Filter>
     </ClCompile>
-    <ClCompile Include="compareHist_func.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="dilate_fun.cpp">
+      <Filter>Source Files\Morphological_operation\eroding and dilating</Filter>
     </ClCompile>
-    <ClCompile Include="template_match_func.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="erode_fun.cpp">
+      <Filter>Source Files\Morphological_operation\eroding and dilating</Filter>
+    </ClCompile>
+    <ClCompile Include="hit_or_miss.cpp">
+      <Filter>Source Files\Morphological_operation\Morphology</Filter>
+    </ClCompile>
+    <ClCompile Include="morphology_fun.cpp">
+      <Filter>Source Files\Morphological_operation\Morphology</Filter>
+    </ClCompile>
+    <ClCompile Include="extractXY.cpp">
+      <Filter>Source Files\Morphological_operation\Morphology</Filter>
+    </ClCompile>
+    <ClCompile Include="find_draw_contours.cpp">
+      <Filter>Source Files\Histogram</Filter>
+    </ClCompile>
+    <ClCompile Include="implement_hough_line.cpp">
+      <Filter>Source Files\Hough_Tranform</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

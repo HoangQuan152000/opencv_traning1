@@ -1,51 +1,76 @@
-﻿#include <opencv2/core.hpp>
+﻿#include <opencv2/opencv.hpp>
+#include <opencv2/core.hpp>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
 #include <iostream>
 
-using namespace cv;
 using namespace std;
 
+using namespace cv;
+
+RNG rng(12345);
 int main() {
-	// Load the images
-	cv::Mat image = cv::imread("example.jpg");
-	resize(image, image, Size(640,460));
-	cv::Mat template_image = cv::imread("template.png");
-	resize(template_image, template_image, Size(), 0.5, 0.5);
 
-	// Create 6 images for each case
-	Mat img[6];
-	for (int i = 0; i < 6; i ++ ) {
-		img[i] = image.clone();
-	}
+	// Đọc ảnh gốc
+	Mat image = imread("google.jpg");
 
-	// initialize the result arrays
-	vector<Mat> results;
-	//Find matching objects
-	for (int method = TM_SQDIFF; method <= TM_CCOEFF_NORMED; method ++) {
-		Mat result;
-		matchTemplate(image , template_image , result , method);
-		results.push_back(result);
-	}
-	// Get position values ​​and intensity values
-	for (int i = 0; i < results.size(); i ++) {
-		double minVal, maxVal;
-		Point minLoc, maxLoc;
-		minMaxLoc(results[i], &minVal, &maxVal, &minLoc, &maxLoc);
-		// Draw rectangles with matching positions on the image
-		if (i < 2) {
-			rectangle(img[i], minLoc, cv::Point(minLoc.x + template_image.cols, minLoc.y + template_image.rows), Scalar(i* 100, 255 / (i + 100), 0), 2+ i);
-		}
-		else
-			rectangle(img[i], maxLoc, cv::Point(maxLoc.x + template_image.cols, maxLoc.y + template_image.rows), cv::Scalar(i * 50, 255 / i, i * 30), 2);
+	resize(image, image, Size(1000, 800));
+	Mat gray_image;
+	cvtColor(image, gray_image, COLOR_BGR2GRAY);
+
+	Mat canny_image;
+	Canny(gray_image, canny_image, 100 , 200);
+	//Initialize array variable to store contour points
+	// (Each parent array will have many child point arrays)
+	vector<vector<Point>> contours;
+
+	// Initialize the hierarchy variable and the relationship of the contours
+	vector<Vec4i> hierarchy;
+
+	// Use the function to find contours, the return value is the set of locations of the contours
+	findContours(canny_image, contours, hierarchy, RETR_TREE, CHAIN_APPROX_SIMPLE);
+
+	// Draw the contours you just found
+	Mat image_draw = Mat::zeros(image.size(), CV_8UC3);
+
+	//Initialize arrays containing the positions of rectangles and circles
+	vector<Rect> boundRects(contours.size());
+	vector<vector<Point>> contours_poly(contours.size());
+	vector<Point2f> centers(contours.size());
+	vector<float> radius(contours.size());
+
+	for (size_t i = 0; i < contours.size(); i++) {
+		
+		// The approxPolyDP() function in the OpenCV library is used to approximate a complex contour to a simpler contour.
+		//This function takes as input a contour and returns a simpler contour. (sum of points on the contour divided by the parameter)
+		approxPolyDP(contours[i], contours_poly[i], 5, true);
+
+		// Converts the values ​​in the contours array to an array containing the top left position and the length and width of the rectangle
+		boundRects[i] = boundingRect(contours_poly[i]);
+
+		//Converts the values ​​in the contours array into an array containing the center position and radius of the circle
+		minEnclosingCircle(contours_poly[i], centers[i], radius[i]);
 		
 	}
 
-	// Display the result
+	for (size_t i = 0; i < contours.size(); i++) {
+		Scalar color = Scalar(rng.uniform(0, 256), rng.uniform(0, 256), rng.uniform(0, 256));
+		drawContours(image_draw, contours, i, color, 1);
+		rectangle(image_draw, boundRects[i].tl(), boundRects[i].br(), Scalar(0, 255, 0), 1);
+		circle(image_draw, centers[i], radius[i], Scalar(0, 0, 255), 1);
+	}
+
+
 	
-	imshow("src", image);
-	imshow("template_image", template_image);
-	cv::waitKey(0);
+	imshow("canny_image", canny_image);
+	imshow("dts", image_draw);
+
+
+	// Chờ người dùng nhấn phím bất kỳ để thoát
+	waitKey(0);
 
 	return 0;
 }
+
+
+
