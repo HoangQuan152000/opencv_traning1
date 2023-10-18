@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="NewFilter1">
-      <UniqueIdentifier>{58f15c7d-e403-4ed7-b727-2857d176e415}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Histogram">
       <UniqueIdentifier>{030b5d0c-1153-4d73-a670-20d49d36e100}</UniqueIdentifier>
     </Filter>
@@ -119,6 +116,12 @@
     </ClCompile>
     <ClCompile Include="implement_hough_line.cpp">
       <Filter>Source Files\Hough_Tranform</Filter>
+    </ClCompile>
+    <ClCompile Include="minArea_fitEllip_fuc.cpp">
+      <Filter>Source Files\Histogram</Filter>
+    </ClCompile>
+    <ClCompile Include="image_moments_area_length.cpp">
+      <Filter>Source Files\Histogram</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

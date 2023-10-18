@@ -154,12 +154,14 @@
     <ClCompile Include="find_draw_contours.cpp" />
     <ClCompile Include="hit_or_miss.cpp" />
     <ClCompile Include="hough_transform.cpp" />
+    <ClCompile Include="image_moments_area_length.cpp" />
     <ClCompile Include="implement_dilating.cpp" />
     <ClCompile Include="implement_hough_line.cpp" />
     <ClCompile Include="implement_otsu.cpp" />
     <ClCompile Include="Laplacian.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mapping_func.cpp" />
+    <ClCompile Include="minArea_fitEllip_fuc.cpp" />
     <ClCompile Include="morphology_fun.cpp" />
     <ClCompile Include="pyramid_image.cpp" />
     <ClCompile Include="remapping_func.cpp" />
