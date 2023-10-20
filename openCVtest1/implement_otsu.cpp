@@ -7,7 +7,7 @@ using namespace cv;
 float otsu_implement(Mat image);
 
 
-int otimp() {
+int imotsu() {
 
 	// load image from file
 	Mat src = imread("sample.jpg");
@@ -47,14 +47,12 @@ int otimp() {
 }
 float otsu_implement(Mat image) {
 
-	// create array pixel histogram
+	// Get the histogram
 	long double histogram[256];
 
 	// initialize all intensity values to 0
 	for (int i = 0; i < 256; i++)
-	{
 		histogram[i] = 0;
-	}
 
 	// calculate the no of pixels for each intensity values
 	for (int y = 0; y < image.rows; y++)
@@ -64,73 +62,61 @@ float otsu_implement(Mat image) {
 	// Calculate the bin_edges
 	long double bin_edges[256];
 	bin_edges[0] = 0.0;
+	// bin_edges[i] = i;
+	for (int i = 1; i < 256; i++)
+		bin_edges[i] = bin_edges[i - 1] + 1;
 
+	// Calculate bin_mids
+	long double bin_mids[256];
+	// bin_mids[i] = i + 0.5;
+	for (int i = 0; i < 256; i++)
+		bin_mids[i] = (bin_edges[i] + bin_edges[i + 1]) / 2;
 
-	// Calculate weight 1 and weight 2
+	// weight1, weight2
 	long double weight1[256];
 	weight1[0] = histogram[0];
-
-	for (int i = 1; i < 256; i++) {
-		bin_edges[i] = bin_edges[i - 1] + 1;
+	for (int i = 1; i < 256; i++)
 		weight1[i] = histogram[i] + weight1[i - 1];
-	}
 
-	/*Calculate bin edges, which are the values ​​that separate bins in the histogram.
-Calculate weight 1 and weight 2, which are the total number of pixels in the respective bins.
-Calculate the mids bins, which are the center values ​​of the bins.
-Calculate mean 1 and mean 2, which are the average values ​​of the pixels in the respective bins.*/
-
-// Calculate bin_mids
-	long double bin_mids[256];
-	int total_sum = 0;
-	// Calculate mean 1 and mean 2
-	long double histogram_bin_mids[256];
-	for (int i = 0; i < 256; i++) {
-		bin_mids[i] = (bin_edges[i] + bin_edges[(uchar)(i + 1)]) / 2;
-		total_sum += histogram[i];
-		histogram_bin_mids[i] = histogram[i] * bin_mids[i];
-	}
+	int total_pixel = 0;
+	for (int i = 0; i < 256; i++)
+		total_pixel += histogram[i];
 
 	long double weight2[256];
-	weight2[0] = total_sum;
-	for (int i = 1; i < 256; i++) {
+	weight2[0] = total_pixel;
+	for (int i = 1; i < 256; i++)
 		weight2[i] = weight2[i - 1] - histogram[i - 1];
-	}
 
-	/*Calculate the cumulative average of the center values ​​of the histogram bin. The first loop calculates the average cumulatively from
-	left to right, the second loop calculates the average cumulatively from right to left.*/
+	// Calculate the class means: mean1 and mean2
+	long double histogram_bin_mids[256];
+	for (int i = 0; i < 256; i++)
+		histogram_bin_mids[i] = histogram[i] * bin_mids[i];
 
 	long double cumsum_mean1[256];
 	cumsum_mean1[0] = histogram_bin_mids[0];
-	for (int i = 1; i < 256; i++) {
+	for (int i = 1; i < 256; i++)
 		cumsum_mean1[i] = cumsum_mean1[i - 1] + histogram_bin_mids[i];
-	}
 
 	long double cumsum_mean2[256];
 	cumsum_mean2[0] = histogram_bin_mids[255];
-	for (int i = 1, j = 254; i < 256 && j >= 0; i++, j--) {
+	for (int i = 1, j = 254; i < 256 && j >= 0; i++, j--)
 		cumsum_mean2[i] = cumsum_mean2[i - 1] + histogram_bin_mids[j];
-	}
 
 	long double mean1[256];
-	for (int i = 0; i < 256; i++) {
+	for (int i = 0; i < 256; i++)
 		mean1[i] = cumsum_mean1[i] / weight1[i];
-	}
 
 	long double mean2[256];
-	for (int i = 0, j = 255; i < 256 && j >= 0; i++, j--) {
+	for (int i = 0, j = 255; i < 256 && j >= 0; i++, j--)
 		mean2[j] = cumsum_mean2[i] / weight2[j];
-	}
-
 
 	// Calculate Inter_class_variance
 	long double Inter_class_variance[255];
 	long double dnum = 10000000000;
-	for (int i = 0; i < 255; i++) {
+	for (int i = 0; i < 255; i++)
 		Inter_class_variance[i] = ((weight1[i] * weight2[i] * (mean1[i] - mean2[i + 1])) / dnum) * (mean1[i] - mean2[i + 1]);
-	}
 
-	// Get the maximum value
+	// Maximize interclass variance
 	long double maxi = 0;
 	int getmax = 0;
 	for (int i = 0; i < 255; i++) {
@@ -140,6 +126,5 @@ Calculate mean 1 and mean 2, which are the average values ​​of the pixels in
 		}
 	}
 
-	cout << "Otsu's algorithm implementation thresholding result: " << bin_mids[getmax];
-	return bin_mids[getmax];;
+	return bin_mids[getmax];
 }

@@ -123,5 +123,11 @@
     <ClCompile Include="image_moments_area_length.cpp">
       <Filter>Source Files\Histogram</Filter>
     </ClCompile>
+    <ClCompile Include="pointPolygonTest_func.cpp">
+      <Filter>Source Files\Histogram</Filter>
+    </ClCompile>
+    <ClCompile Include="watershed_distance_func.cpp">
+      <Filter>Source Files\Histogram</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

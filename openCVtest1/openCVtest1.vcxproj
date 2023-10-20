@@ -163,12 +163,14 @@
     <ClCompile Include="mapping_func.cpp" />
     <ClCompile Include="minArea_fitEllip_fuc.cpp" />
     <ClCompile Include="morphology_fun.cpp" />
+    <ClCompile Include="pointPolygonTest_func.cpp" />
     <ClCompile Include="pyramid_image.cpp" />
     <ClCompile Include="remapping_func.cpp" />
     <ClCompile Include="sobel.cpp" />
     <ClCompile Include="template_match_func.cpp" />
     <ClCompile Include="threshold_func.cpp" />
     <ClCompile Include="warpAffine_func.cpp" />
+    <ClCompile Include="watershed_distance_func.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,2 +1,9 @@
 ﻿  main.cpp
+C:\Users\PC2-2\Desktop\training opencv\opencv_traning1\openCVtest1\main.cpp(18,11): warning C4566: character represented by universal-character-name '\u1EC3' cannot be represented in the current code page (1252)
+C:\Users\PC2-2\Desktop\training opencv\opencv_traning1\openCVtest1\main.cpp(18,11): warning C4566: character represented by universal-character-name '\u0111' cannot be represented in the current code page (1252)
+C:\Users\PC2-2\Desktop\training opencv\opencv_traning1\openCVtest1\main.cpp(18,11): warning C4566: character represented by universal-character-name '\u1ECD' cannot be represented in the current code page (1252)
+C:\Users\PC2-2\Desktop\training opencv\opencv_traning1\openCVtest1\main.cpp(18,11): warning C4566: character represented by universal-character-name '\u1EA3' cannot be represented in the current code page (1252)
+C:\Users\PC2-2\Desktop\training opencv\opencv_traning1\openCVtest1\main.cpp(28,17): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\PC2-2\Desktop\training opencv\opencv_traning1\openCVtest1\main.cpp(83,30): warning C4244: '+=': conversion from 'long double' to 'int', possible loss of data
+C:\Users\PC2-2\Desktop\training opencv\opencv_traning1\openCVtest1\main.cpp(129,24): warning C4244: 'return': conversion from 'long double' to 'float', possible loss of data
   openCVtest1.vcxproj -> C:\Users\PC2-2\Desktop\training opencv\opencv_traning1\x64\Debug\openCVtest1.exe
