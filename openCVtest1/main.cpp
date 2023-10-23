@@ -1,7 +1,7 @@
-﻿#include <opencv2/opencv.hpp>
-#include <opencv2/core.hpp>
-#include <opencv2/imgproc.hpp>
-#include <opencv2/highgui.hpp>
+﻿
+#include "opencv2/highgui.hpp"
+#include "opencv2/imgcodecs.hpp"
+#include "opencv2/imgproc.hpp"
 #include <iostream>
 
 using namespace std;
@@ -9,109 +9,115 @@ using namespace cv;
 
 
 // Hàm phát hiện đường thẳng trong ảnh bằng thuật toán Hough với các tham số rho và theta cố định
-vector<Vec2d> my_hough( Mat img, int threshold) {
-    float theta = CV_PI / 180;
+vector<Vec2f> my_hough(Mat img, double rho , double theta , int threshold) {
+
     // Tính toán chiều cao và chiều rộng của ảnh
     int img_height = img.rows;
     int img_width = img.cols;
 
     // Tính toán độ dài và độ dốc của đường thẳng dài nhất có thể được phát hiện
-    int num_rho = int(sqrt(img_height * img_height + img_width * img_width));
+    int diagonal_length = int(sqrt(img_height * img_height + img_width * img_width));
+    int max_num_rho = int(diagonal_length / rho);
     int num_theta = int(CV_PI / theta);
 
-    // Tạo ma trận kích thước (2 * num_rho + 1, num_theta)
-    //Mat edge_matrix =Mat::zeros(2 * num_rho + 1, num_theta, CV_32S);
-    vector<vector<float>> edge_matrix(2 * num_rho + 1,vector<float>(num_theta));
-
-    // Tìm các điểm biên trong ảnh
+    // Find pixels that are edges
     vector<Point> point_pixel_edges;
     findNonZero(img, point_pixel_edges);
-    int num_points = point_pixel_edges.size();
-    vector<vector<int>> two_d_array(num_points, vector<int>(2));
-    for (int i = 0; i < num_points; i++) {
-        // Lưu trữ vị trí của điểm biên thứ i
-        two_d_array[i][0] = point_pixel_edges[i].x;
-        two_d_array[i][1] = point_pixel_edges[i].y;
-    }
-    float theta_matrix[2][180];
-    
-    for (int i = 0; i < 180; i++) {
+    int num_points_edges = point_pixel_edges.size();
 
-        theta_matrix[0][i] = cos(theta);
-        theta_matrix[1][i] = sin(theta);
-        theta += theta;
-    }
+    //Change the row and col positions of Point to each other
+    vector<vector<int>> arr_point_edges(num_points_edges, vector<int>(2));
+    for (int i = 0; i < num_points_edges; i++) {
 
-    vector<vector<int>> vote_matrix(num_points, vector<int>(num_theta));
-    for (int i = 0; i < num_points; i ++) {
-        for (int  j = 0; j < num_theta; j ++ ) {
-            for (int k = 0; k < 2; k++ ) {
-                vote_matrix[i][j] += two_d_array[i][k] * theta_matrix[k][j];
-            }
-            
-        }
+        arr_point_edges[i][0] = point_pixel_edges[i].x;
+        arr_point_edges[i][1] = point_pixel_edges[i].y;
+    }
+    // Create a 2 X 180 matrix containing theta cases
+    vector<vector<float>> theta_matrix(2, vector<float>(num_theta));
+    float current_theta = 0;
+    for (int i = 0; i < num_theta; i++) {
+        theta_matrix[0][i] = cos(current_theta);
+        theta_matrix[1][i] = sin(current_theta);
+        current_theta += theta;
     }
 
-    for (int i = 0; i < num_points ; i++) {
+    // Create a voting matrix as the dot product of 2 matrices
+    vector<vector<float>> vote_matrix(num_points_edges, vector<float>(num_theta));
+    for (int i = 0; i < num_points_edges; i++) {
         for (int j = 0; j < num_theta; j++) {
-            int rho_post = int(cvRound(vote_matrix[i][j])) + num_rho;
-            edge_matrix[rho_post][j] += 1;
-        }
-    }
-
-
-
-    // Tính toán ma trận vote_matrix
-    Mat vote_matrix(point_pixel_edges.size(), num_theta, CV_32S);
-    for (int i = 0; i < point_pixel_edges.size(); i++) {
-        for (int i = 1; i <= 180; i++) {
-            vote_matrix.at<int>(i, 0)
-        }
-        vote_matrix.at<int>(i, 0) = idx[i].x * cos(theta) + idx[i].y * sin(theta);
-    }
-
-    // Tính toán ma trận edge_matrix
-    int rho_pos;
-    for (int vr = 0; vr < vote_matrix.rows; vr++) {
-        for (int vc = 0; vc < vote_matrix.cols; vc++) {
-            rho_pos = round(vote_matrix.at<int>(vr, vc)) + num_rho;
-            edge_matrix.at<int>(rho_pos, vc)++;
-        }
-    }
-
-    // Tìm các đường thẳng được phát hiện
-    std::vector<Vec2d> lines;
-    for (int i = 0; i < edge_matrix.rows; i++) {
-        for (int j = 0; j < edge_matrix.cols; j++) {
-            if (edge_matrix.at<int>(i, j) > threshold) {
-                lines.push_back(Vec2d( i - num_rho, j * theta / CV_PI ));
+            for (int k = 0; k < 2; k++) {
+                vote_matrix[i][j] += arr_point_edges[i][k] * theta_matrix[k][j];
             }
         }
     }
 
-    // Cố định tham số rho và theta
-    for (auto& line : lines) {
-        line[0] = line[0] - 1;
-        line[1] = line[1] * theta / CV_PI;
-    }
+    // create a matrix that counts the number of repetitions of rho and theta pairs
+    vector<vector<float>> edge_matrix(2 * max_num_rho + 1, vector<float>(num_theta));
 
+    for (int i = 0; i < edge_matrix.size(); i++) {
+        for (int j = 0; j < edge_matrix[i].size(); j++) {
+            edge_matrix[i][j] = 0;
+        }
+    }
+     
+    for (int i = 0; i < num_points_edges; i++) {
+        for (int j = 0; j < num_theta; j++) {
+
+            int rho_post = int(cvRound(vote_matrix[i][j])) + max_num_rho;
+
+            edge_matrix[rho_post][j] += 1;
+
+        }
+    }
+    // create an index matrix containing pairs of rho and theta greater than the threshold
+    vector<Vec2i> line_idx;
+    for (int i = 0; i < edge_matrix.size(); i++) {
+        for (int j = 0; j < edge_matrix[i].size(); j++) {
+            if (edge_matrix[i][j] > threshold) {
+                line_idx.push_back({ i, j });
+            }
+        }
+    }
+     // Create a vector containing rho values
+    vector<int> rho_values;
+
+    for (int i = 0; i < line_idx.size(); i++) {
+        rho_values.push_back(line_idx[i][0] - max_num_rho);
+    }
+     // Create a vector containing theta values
+    vector<float> theta_values;
+    for (int i = 0; i < line_idx.size(); i++) {
+        theta_values.push_back(line_idx[i][1] * CV_PI / 180.0);
+    }
+     // add the pairs rho and theta and the returned array
+    vector<Vec2f> lines(line_idx.size());
+    for (int i = 0; i < line_idx.size(); i++) {
+        lines.emplace_back(rho_values[i], theta_values[i]);
+    }
     return lines;
 }
+
 int main() {
 
     // Đọc ảnh
     Mat img = imread("sample.jpg");
-
+    resize(img, img, Size(640, 460));
+    if (img.empty())
+    {
+        return -1;
+    }
     // Chuyển ảnh sang ảnh xám
     Mat gray;
     cvtColor(img, gray, COLOR_BGR2GRAY);
-
+    GaussianBlur(gray, gray, Size(5, 5), 0);
     // Áp dụng thuật toán Canny để phát hiện cạnh
     Mat edges;
     Canny(gray, edges, 100, 200);
 
     // Phát hiện đường thẳng bằng hàm my_hough
-    vector<Vec2i> lines = my_hough(edges, 100);
+    vector<Vec2f> lines = my_hough(edges, 1, CV_PI/180 , 100);
+    //vector<Vec2f> lines;
+    //HoughLines(edges , lines , 1 , CV_PI / 180 , 100);
 
     // Vẽ các đường thẳng được phát hiện lên ảnh
     for (size_t i = 0; i < lines.size(); i++)
@@ -124,12 +130,28 @@ int main() {
         pt1.y = cvRound(y0 + 1000 * (a));
         pt2.x = cvRound(x0 - 1000 * (-b));
         pt2.y = cvRound(y0 - 1000 * (a));
-        line(cdst, pt1, pt2, Scalar(0, 0, 255), 3, LINE_AA);
+        line(gray, pt1, pt2, Scalar(0, 0, 255), 2);
     }
-
+    vector<Vec2f> hough_lines;
+    HoughLines(edges, hough_lines, 1, CV_PI / 180, 100);
+    for (size_t i = 0; i < hough_lines.size(); i++)
+    {
+        float rho = hough_lines[i][0], theta = hough_lines[i][1];
+        Point pt1, pt2;
+        double a = cos(theta), b = sin(theta);
+        double x0 = a * rho, y0 = b * rho;
+        pt1.x = cvRound(x0 + 1000 * (-b));
+        pt1.y = cvRound(y0 + 1000 * (a));
+        pt2.x = cvRound(x0 - 1000 * (-b));
+        pt2.y = cvRound(y0 - 1000 * (a));
+        line(img, pt1, pt2, Scalar(0, 0, 255), 2);
+    }
     // Hiển thị ảnh
     imshow("Image", img);
+    imshow("gray", gray);
     waitKey(0);
 
     return 0;
 }
+
+
