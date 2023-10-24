@@ -75,7 +75,7 @@ vector<Vec2f> my_hough(Mat img, double rho , double theta , int threshold) {
     for (int i = 0; i < edge_matrix.size(); i++) {
         for (int j = 0; j < edge_matrix[i].size(); j++) {
             if (edge_matrix[i][j] > threshold) {
-                line_idx.push_back({ i, j });
+                line_idx[i] = Vec2i(i , j);
             }
         }
     }
