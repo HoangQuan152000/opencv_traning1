@@ -8,15 +8,16 @@ using namespace std;
 using namespace cv;
 
 
-// Hàm phát hiện đường thẳng trong ảnh bằng thuật toán Hough với các tham số rho và theta cố định
+
 vector<Vec2f> my_hough(Mat img, double rho , double theta , int threshold) {
 
-    // Tính toán chiều cao và chiều rộng của ảnh
+   // Calculate the width and height of the image
     int img_height = img.rows;
     int img_width = img.cols;
 
-    // Tính toán độ dài và độ dốc của đường thẳng dài nhất có thể được phát hiện
+    // calculate the diagonal length
     int diagonal_length = int(sqrt(img_height * img_height + img_width * img_width));
+    // maximum number of cases of rho and theta
     int max_num_rho = int(diagonal_length / rho);
     int num_theta = int(CV_PI / theta);
 
@@ -90,34 +91,34 @@ vector<Vec2f> my_hough(Mat img, double rho , double theta , int threshold) {
         theta_values.push_back(line_idx[i][1] * CV_PI / 180.0);
     }
      // add the pairs rho and theta and the returned array
-    vector<Vec2f> lines(line_idx.size());
+    vector<Vec2f> lines;
+    lines.resize(line_idx.size());
     for (int i = 0; i < line_idx.size(); i++) {
-        lines.emplace_back(rho_values[i], theta_values[i]);
+        lines[i] = Vec2f(rho_values[i], theta_values[i]);
     }
     return lines;
 }
 
 int main() {
 
-    // Đọc ảnh
+    
     Mat img = imread("sample.jpg");
     resize(img, img, Size(640, 460));
     if (img.empty())
     {
         return -1;
     }
-    // Chuyển ảnh sang ảnh xám
+    
     Mat gray;
     cvtColor(img, gray, COLOR_BGR2GRAY);
     GaussianBlur(gray, gray, Size(5, 5), 0);
-    // Áp dụng thuật toán Canny để phát hiện cạnh
+    
     Mat edges;
     Canny(gray, edges, 100, 200);
 
-    // Phát hiện đường thẳng bằng hàm my_hough
+    
     vector<Vec2f> lines = my_hough(edges, 1, CV_PI/180 , 100);
-    //vector<Vec2f> lines;
-    //HoughLines(edges , lines , 1 , CV_PI / 180 , 100);
+    
 
     // Vẽ các đường thẳng được phát hiện lên ảnh
     for (size_t i = 0; i < lines.size(); i++)
@@ -126,12 +127,14 @@ int main() {
         Point pt1, pt2;
         double a = cos(theta), b = sin(theta);
         double x0 = a * rho, y0 = b * rho;
+        // Stretch the start and end positions out of the image range
         pt1.x = cvRound(x0 + 1000 * (-b));
         pt1.y = cvRound(y0 + 1000 * (a));
         pt2.x = cvRound(x0 - 1000 * (-b));
         pt2.y = cvRound(y0 - 1000 * (a));
         line(gray, pt1, pt2, Scalar(0, 0, 255), 2);
     }
+
     vector<Vec2f> hough_lines;
     HoughLines(edges, hough_lines, 1, CV_PI / 180, 100);
     for (size_t i = 0; i < hough_lines.size(); i++)

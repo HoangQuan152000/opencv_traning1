@@ -1,12 +1,12 @@
 ﻿  main.cpp
-C:\Users\PC2-2\Desktop\training opencv\opencv_traning1\openCVtest1\main.cpp(26,52): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\PC2-2\Desktop\training opencv\opencv_traning1\openCVtest1\main.cpp(41,31): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-C:\Users\PC2-2\Desktop\training opencv\opencv_traning1\openCVtest1\main.cpp(90,55): warning C4244: 'argument': conversion from 'double' to '_Ty', possible loss of data
+C:\Users\PC2-2\Desktop\training opencv\opencv_traning1\openCVtest1\main.cpp(27,52): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\PC2-2\Desktop\training opencv\opencv_traning1\openCVtest1\main.cpp(42,31): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\PC2-2\Desktop\training opencv\opencv_traning1\openCVtest1\main.cpp(91,55): warning C4244: 'argument': conversion from 'double' to '_Ty', possible loss of data
           with
           [
               _Ty=float
           ]
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\xmemory(681,68): warning C4244: 'argument': conversion from '_Ty' to '_Tp', possible loss of data
+C:\Users\PC2-2\Desktop\training opencv\opencv_traning1\openCVtest1\main.cpp(97,38): warning C4244: 'argument': conversion from '_Ty' to '_Tp', possible loss of data
           with
           [
               _Ty=int
@@ -14,29 +14,5 @@ C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.2
           and
           [
               _Tp=float
-          ]
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\vector(708): message : see reference to function template instantiation 'void std::_Default_allocator_traits<_Alloc>::construct<_Ty,int&,float&>(_Alloc &,_Objty *const ,int &,float &)' being compiled
-          with
-          [
-              _Alloc=std::allocator<cv::Vec2f>,
-              _Ty=cv::Vec<float,2>,
-              _Objty=cv::Vec<float,2>
-          ]
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\vector(713): message : see reference to function template instantiation 'void std::_Default_allocator_traits<_Alloc>::construct<_Ty,int&,float&>(_Alloc &,_Objty *const ,int &,float &)' being compiled
-          with
-          [
-              _Alloc=std::allocator<cv::Vec2f>,
-              _Ty=cv::Vec<float,2>,
-              _Objty=cv::Vec<float,2>
-          ]
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\vector(726): message : see reference to function template instantiation 'void std::vector<cv::Vec2f,std::allocator<cv::Vec2f>>::_Emplace_back_with_unused_capacity<_Ty&,float&>(_Ty &,float &)' being compiled
-          with
-          [
-              _Ty=int
-          ]
-C:\Users\PC2-2\Desktop\training opencv\opencv_traning1\openCVtest1\main.cpp(95): message : see reference to function template instantiation 'void std::vector<cv::Vec2f,std::allocator<cv::Vec2f>>::emplace_back<_Ty&,float&>(_Ty &,float &)' being compiled
-          with
-          [
-              _Ty=int
           ]
   openCVtest1.vcxproj -> C:\Users\PC2-2\Desktop\training opencv\opencv_traning1\x64\Debug\openCVtest1.exe
