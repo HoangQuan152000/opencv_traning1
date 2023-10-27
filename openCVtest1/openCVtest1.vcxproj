@@ -156,6 +156,7 @@
     <ClCompile Include="hough_transform.cpp" />
     <ClCompile Include="image_moments_area_length.cpp" />
     <ClCompile Include="implement_dilating.cpp" />
+    <ClCompile Include="implement_hough_circle.cpp" />
     <ClCompile Include="implement_hough_line.cpp" />
     <ClCompile Include="implement_otsu.cpp" />
     <ClCompile Include="Laplacian.cpp" />

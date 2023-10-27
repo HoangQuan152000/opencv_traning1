@@ -1,4 +1,4 @@
-﻿/*
+﻿
 #include "opencv2/highgui.hpp"
 #include "opencv2/imgcodecs.hpp"
 #include "opencv2/imgproc.hpp"
@@ -97,7 +97,7 @@ vector<Vec2f> my_hough(Mat img, double rho, double theta, int threshold) {
     return lines;
 }
 
-int main() {
+int mainho() {
 
     // Đọc ảnh
     Mat img = imread("sample.jpg");
@@ -153,5 +153,5 @@ int main() {
 
     return 0;
 }
-*/
+
 

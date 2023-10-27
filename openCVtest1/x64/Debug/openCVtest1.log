@@ -1,18 +1,28 @@
 ﻿  main.cpp
-C:\Users\PC2-2\Desktop\training opencv\opencv_traning1\openCVtest1\main.cpp(27,52): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\PC2-2\Desktop\training opencv\opencv_traning1\openCVtest1\main.cpp(42,31): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-C:\Users\PC2-2\Desktop\training opencv\opencv_traning1\openCVtest1\main.cpp(91,55): warning C4244: 'argument': conversion from 'double' to '_Ty', possible loss of data
+C:\Users\PC2-2\Desktop\Quan_traning\opencv_traning1\openCVtest1\main.cpp(69,53): warning C4244: 'argument': conversion from 'int' to '_Tp', possible loss of data
           with
-          [
-              _Ty=float
-          ]
-C:\Users\PC2-2\Desktop\training opencv\opencv_traning1\openCVtest1\main.cpp(97,38): warning C4244: 'argument': conversion from '_Ty' to '_Tp', possible loss of data
-          with
-          [
-              _Ty=int
-          ]
-          and
           [
               _Tp=float
           ]
-  openCVtest1.vcxproj -> C:\Users\PC2-2\Desktop\training opencv\opencv_traning1\x64\Debug\openCVtest1.exe
+C:\Users\PC2-2\Desktop\Quan_traning\opencv_traning1\openCVtest1\main.cpp(69,48): warning C4244: 'argument': conversion from 'int' to '_Tp', possible loss of data
+          with
+          [
+              _Tp=float
+          ]
+C:\Users\PC2-2\Desktop\Quan_traning\opencv_traning1\openCVtest1\main.cpp(69,45): warning C4244: 'argument': conversion from 'int' to '_Tp', possible loss of data
+          with
+          [
+              _Tp=float
+          ]
+C:\Users\PC2-2\Desktop\Quan_traning\opencv_traning1\openCVtest1\main.cpp(110,37): warning C4244: 'argument': conversion from 'float' to '_Tp', possible loss of data
+          with
+          [
+              _Tp=int
+          ]
+C:\Users\PC2-2\Desktop\Quan_traning\opencv_traning1\openCVtest1\main.cpp(110,34): warning C4244: 'argument': conversion from 'float' to '_Tp', possible loss of data
+          with
+          [
+              _Tp=int
+          ]
+C:\Users\PC2-2\Desktop\Quan_traning\opencv_traning1\openCVtest1\main.cpp(110,41): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  openCVtest1.vcxproj -> C:\Users\PC2-2\Desktop\Quan_traning\opencv_traning1\x64\Debug\openCVtest1.exe

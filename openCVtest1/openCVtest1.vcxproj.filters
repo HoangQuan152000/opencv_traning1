@@ -129,5 +129,8 @@
     <ClCompile Include="watershed_distance_func.cpp">
       <Filter>Source Files\Histogram</Filter>
     </ClCompile>
+    <ClCompile Include="implement_hough_circle.cpp">
+      <Filter>Source Files\Hough_Tranform</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
