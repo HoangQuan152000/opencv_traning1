@@ -76,10 +76,7 @@ vector<Vec3f> my_hough_circle(Mat img, int minRadius, int maxRadius) {
     return circles;
 }
 int main() {
-
-
-
-
+    //read
     Mat image = imread("circle.jpg");
     if (image.empty()) {
         cout << "cannot read file!";
